@@ -4,7 +4,7 @@ pipeline {
     tools {
         // Define the tools required for the build (e.g., Maven and JDK)
         maven 'Maven 3.6'  // Name defined in Jenkins Tool Configuration
-        jdk 'JDK 11'       // Name defined in Jenkins Tool Configuration (update to JDK 17 if needed)
+        jdk 'JDK 17'       // Name defined in Jenkins Tool Configuration (update to JDK 17 if needed)
     }
 
     environment {
