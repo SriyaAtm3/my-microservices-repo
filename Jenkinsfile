@@ -3,7 +3,7 @@ pipeline {
 
     tools {
         maven 'Maven 3.6'
-        jdk 'JDK 17'  // Ensure JDK is properly configured in Jenkins tool
+        jdk 'JDK 17'  // Make sure this matches your tool configuration in Jenkins
     }
 
     environment {
@@ -17,43 +17,37 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build Service1') {
             steps {
-                script {
-                    // Explicit closure to avoid ambiguity
-                    // Wrap this in a closure (parameterless)
-                    sh 'mvn clean package -DskipTests' 
-                    // Explicitly invoke the closure
+                dir('service1') {  // Change the directory to 'service1'
+                    script {
+                        // Now run Maven in the 'service1' directory
+                        sh 'mvn clean package -DskipTests'
+                    }
                 }
             }
         }
 
-        stage('Test') {
+        stage('Build Service2') {
             steps {
-                script {
-                    // Run unit tests in the script block
-                    sh 'mvn test'
+                dir('service2') {  // Change the directory to 'service2'
+                    script {
+                        // Now run Maven in the 'service2' directory
+                        sh 'mvn clean package -DskipTests'
+                    }
                 }
             }
         }
 
-        stage('Deploy') {
-            steps {
-                script {
-                    // Deployment logic, for example, Docker build and push
-                    sh 'docker build -t my-docker-username/myapp:latest .'
-                    sh 'docker push my-docker-username/myapp:latest'
-                }
-            }
-        }
-    }
+        // Add additional stages for other services
 
-    post {
-        success {
-            echo 'Build and tests completed successfully!'
-        }
-        failure {
-            echo 'Build or tests failed. Please check the logs!'
+        post {
+            success {
+                echo 'Build and tests completed successfully!'
+            }
+            failure {
+                echo 'Build or tests failed. Please check the logs!'
+            }
         }
     }
 }
