@@ -1,14 +1,13 @@
 pipeline {
-    agent any  // This specifies that the pipeline can run on any available agent (e.g., a node, container, etc.)
+    agent any
 
     tools {
-        // Define the tools required for the build (e.g., Maven and JDK)
-        maven 'Maven 3.6'  // Name defined in Jenkins Tool Configuration
-        jdk 'JDK 17'       // Name defined in Jenkins Tool Configuration (update to JDK 17 if needed)
+        maven 'Maven 3.6'
+        jdk 'JDK 17'  // Ensure JDK is correctly configured
     }
 
     environment {
-        MAVEN_OPTS = "-Dmaven.test.failure.ignore=true"  // Optional: Ignore test failures for the build stage
+        MAVEN_OPTS = "-Dmaven.test.failure.ignore=true"
     }
 
     stages {
@@ -21,8 +20,6 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Wrap the logic inside a closure
-                    // This ensures that the code is treated as a closure and not as an open block
                     return sh(script: 'mvn clean package -DskipTests', returnStdout: true).trim()
                 }
             }
@@ -31,7 +28,6 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    // Run unit tests
                     sh 'mvn test'
                 }
             }
