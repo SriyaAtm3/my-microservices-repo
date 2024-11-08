@@ -4,33 +4,29 @@ pipeline {
     tools {
         // Define the tools required for the build (e.g., Maven and JDK)
         maven 'Maven 3.6'  // Name defined in Jenkins Tool Configuration
-        jdk 'JDK 11'       // Name defined in Jenkins Tool Configuration
+        jdk 'JDK 11'       // Name defined in Jenkins Tool Configuration (update to JDK 17 if needed)
     }
 
     environment {
-        // Define any environment variables that can be used across the pipeline
         MAVEN_OPTS = "-Dmaven.test.failure.ignore=true"  // Optional: Ignore test failures for the build stage
     }
 
     stages {
-        // Stage for checking out the source code from Git
         stage('Checkout') {
             steps {
-                git 'https://github.com/yourusername/your-repo.git'  // Replace with your repository URL
+                git 'https://github.com/SriyaAtm3/my-microservices-repo.git'
             }
         }
 
-        // Stage for building the project using Maven
         stage('Build') {
             steps {
                 script {
-                    // Execute Maven to clean and package the application
+                    // Explicit closure to avoid Groovy compilation error
                     sh 'mvn clean package -DskipTests'  // Skip tests during the build (optional)
                 }
             }
         }
 
-        // Stage for running unit tests using Maven
         stage('Test') {
             steps {
                 script {
@@ -40,7 +36,6 @@ pipeline {
             }
         }
 
-        // Stage for deploying the application (optional, depends on your setup)
         stage('Deploy') {
             steps {
                 script {
@@ -53,7 +48,6 @@ pipeline {
     }
 
     post {
-        // Actions that will be executed after the pipeline finishes
         success {
             echo 'Build and tests completed successfully!'
         }
