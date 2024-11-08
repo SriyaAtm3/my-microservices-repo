@@ -3,7 +3,7 @@ pipeline {
 
     tools {
         maven 'Maven 3.6'
-        jdk 'JDK 17'  // Ensure JDK is correctly configured
+        jdk 'JDK 17'  // Ensure JDK is properly configured in Jenkins tool
     }
 
     environment {
@@ -20,7 +20,11 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    return sh(script: 'mvn clean package -DskipTests', returnStdout: true).trim()
+                    // Explicit closure to avoid ambiguity
+                    // Wrap this in a closure (parameterless)
+                    { 
+                        sh 'mvn clean package -DskipTests' 
+                    }() // Explicitly invoke the closure
                 }
             }
         }
@@ -28,6 +32,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
+                    // Run unit tests in the script block
                     sh 'mvn test'
                 }
             }
@@ -36,9 +41,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // Example deployment logic
-                    // sh 'docker build -t my-docker-username/myapp:latest .'
-                    // sh 'docker push my-docker-username/myapp:latest'
+                    // Deployment logic, for example, Docker build and push
+                    sh 'docker build -t my-docker-username/myapp:latest .'
+                    sh 'docker push my-docker-username/myapp:latest'
                 }
             }
         }
