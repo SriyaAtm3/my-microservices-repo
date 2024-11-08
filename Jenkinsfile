@@ -22,9 +22,8 @@ pipeline {
                 script {
                     // Explicit closure to avoid ambiguity
                     // Wrap this in a closure (parameterless)
-                    { 
-                        sh 'mvn clean package -DskipTests' 
-                    }() // Explicitly invoke the closure
+                    sh 'mvn clean package -DskipTests' 
+                    // Explicitly invoke the closure
                 }
             }
         }
