@@ -21,8 +21,9 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Explicit closure to avoid Groovy compilation error
-                    sh 'mvn clean package -DskipTests'  // Skip tests during the build (optional)
+                    // Wrap the logic inside a closure
+                    // This ensures that the code is treated as a closure and not as an open block
+                    return sh(script: 'mvn clean package -DskipTests', returnStdout: true).trim()
                 }
             }
         }
@@ -30,7 +31,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    // Execute Maven to run unit tests
+                    // Run unit tests
                     sh 'mvn test'
                 }
             }
@@ -39,7 +40,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // Example deployment step, e.g., push to Docker Hub
+                    // Example deployment logic
                     // sh 'docker build -t my-docker-username/myapp:latest .'
                     // sh 'docker push my-docker-username/myapp:latest'
                 }
