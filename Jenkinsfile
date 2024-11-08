@@ -41,13 +41,6 @@ pipeline {
 
         // Add additional stages for other services
 
-        post {
-            success {
-                echo 'Build and tests completed successfully!'
-            }
-            failure {
-                echo 'Build or tests failed. Please check the logs!'
-            }
-        }
+    
     }
 }
